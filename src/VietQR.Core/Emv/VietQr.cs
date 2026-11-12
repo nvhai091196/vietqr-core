@@ -200,21 +200,26 @@ public class VietQr : IQrGenerator
     /// Thiết lập thông tin bổ sung (Tag 62 - Mục 5.2.14) theo chuẩn NAPAS247:
     /// - Sub-ID 01: Số hóa đơn (Bill Number - tối đa 25 ký tự)
     /// - Sub-ID 05: Mã đơn hàng tham chiếu / Order ID (Reference Label - tối đa 25 ký tự)
-    /// - Sub-ID 08: Mục đích giao dịch / Nội dung thanh toán (Purpose - tối đa 25 ký tự theo NAPAS Bảng 8)
+    /// - Sub-ID 08: Mục đích giao dịch / Nội dung thanh toán (Purpose - tối đa 50 ký tự)
+    /// Đảm bảo tổng độ dài dữ liệu trong Tag 62 (ID 62) không vượt quá 99 ký tự theo chuẩn NAPAS.
     /// </summary>
     public VietQr SetAdditionalData(
         string? purpose = null,
         string? billNumber = null,
         string? referenceLabel = null)
     {
+        const int MaxTag62Length = 99;
         var innerSb = new StringBuilder();
 
         void AppendSubTag(string id, string? val, int maxLen = 25)
         {
             if (string.IsNullOrWhiteSpace(val)) return;
             var clean = RemoveDiacritics(val.Trim());
-            int remainingSpace = 99 - innerSb.Length - 4;
+            if (string.IsNullOrEmpty(clean)) return;
+
+            int remainingSpace = MaxTag62Length - innerSb.Length - 4;
             if (remainingSpace <= 0) return;
+
             int limit = Math.Min(maxLen, remainingSpace);
             if (clean.Length > limit) clean = clean[..limit];
             innerSb.Append($"{id}{ConvertLength(clean.Length)}{clean}");
@@ -234,8 +239,8 @@ public class VietQr : IQrGenerator
             if (!_manualMethodOverride) _pointOfInitiationMethod = MethodDynamic;
         }
 
-        // Sub-tag 08: Purpose of Transaction (Nội dung CK)
-        AppendSubTag("08", purpose, 25);
+        // Sub-tag 08: Purpose of Transaction (Nội dung CK - tối đa 50 ký tự)
+        AppendSubTag("08", purpose, 50);
 
         var inner = innerSb.ToString();
         _additionalDataFieldTemplate = inner.Length > 0 ? $"62{ConvertLength(inner.Length)}{inner}" : "";
