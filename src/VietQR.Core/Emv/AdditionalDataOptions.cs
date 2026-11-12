@@ -18,7 +18,7 @@ public sealed class AdditionalDataOptions
     public string? ReferenceLabel { get; set; }
 
     /// <summary>
-    /// Sub-tag 08: Mục đích giao dịch / Nội dung chuyển khoản (Purpose of Transaction - tối đa 25 ký tự theo NAPAS Bảng 8).
+    /// Sub-tag 08: Mục đích giao dịch / Nội dung chuyển khoản (Purpose of Transaction - tối đa 50 ký tự).
     /// </summary>
     public string? Purpose { get; set; }
 }
