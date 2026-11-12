@@ -11,7 +11,7 @@
     <IsPackable>true</IsPackable>
     <PackageId>VietQR.Core</PackageId>
     <Title>VietQR.Core - Thư viện tạo và đọc mã VietQR (.NET / C#)</Title>
-    <Version>1.0.1</Version>
+    <Version>1.0.9</Version>
     <Authors>Hien Dev</Authors>
     <Company>Ngochiendev</Company>
     <Description>Thư viện C# (.NET) hỗ trợ tạo chuỗi, đọc mã QR và render ảnh thẻ thanh toán VietQR theo chuẩn NAPAS247 / EMVCo, tích hợp sẵn danh mục ngân hàng Việt Nam.</Description>
